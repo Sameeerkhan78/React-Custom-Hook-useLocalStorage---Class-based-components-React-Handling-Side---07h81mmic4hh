@@ -1,26 +1,26 @@
-import React,{useState} from 'react'
-import '../styles/App.css';
+import React, { useRef, useState } from "react";
+import "../styles/App.css";
+import useLocalStorage from "./useLocalStorage";
 
 const App = () => {
-  const [height , setHeight]=useState(320);
-  const [width , setWidth]=useState(320);
+  const [state, setState] = useLocalStorage("key", null);
+  const inputRef = useRef(null);
 
-  const handleChange1=(event)=>{
-    setHeight(event.target.value)+"px"
-  }
-  const handleChange2=(event)=>{
-    setWidth(event.target.value)+"px"
-  }
+  const submitHandler = (e) => {
+    e.preventDefault();
+    const text = inputRef.current.value;
+    setState(text);
+  };
+
   return (
     <div id="main">
-        <input type="range" min="100" max="800" value={height} id="height-slider" onChange={handleChange1}></input>
-        <div>{height}px</div>
-        <input type="range" min="100" max="800" value={width} id="width-slider" onChange={handleChange2}></input>
-        <div>{width}px</div>
-        <img id='resizable-img' src='../src/image.jpeg' height={height} width={width} alt="resizable-img"/>
+      <label>Enter a Value to save in localStorage</label>
+      <input type="text" id="value" ref={inputRef} />
+      <button id="set" onClick={submitHandler}>
+        Set Value
+      </button>
     </div>
-  )
-}
-
+  );
+};
 
 export default App;
